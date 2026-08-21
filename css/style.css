@@ -434,6 +434,9 @@ button { font-family: inherit; cursor: pointer; }
   max-width: 480px;
   margin-top: 4px;
 }
+@media (min-width: 901px) {
+  .inf-header-desc { max-width: 620px; font-size: 1rem; }
+}
 .inf-header .btn { flex: none; }
 
 .carousel-wrap {
@@ -756,4 +759,7 @@ button { font-family: inherit; cursor: pointer; }
 
   .hero { padding: 150px 0 80px; }
   .section { padding: 70px 0; }
+
+  .inf-card { width: 100%; }
+  .carousel { scroll-snap-type: x mandatory; }
 }

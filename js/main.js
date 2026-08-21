@@ -156,8 +156,10 @@ const nextBtn = document.getElementById("nextBtn");
 function scrollByCards(direction) {
   const card = carousel.querySelector(".inf-card");
   if (!card) return;
+  const isMobile = window.matchMedia("(max-width: 760px)").matches;
   const cardWidth = card.getBoundingClientRect().width + 16; // gap
-  carousel.scrollBy({ left: direction * cardWidth * 3, behavior: "smooth" });
+  const cardsPerStep = isMobile ? 1 : 3;
+  carousel.scrollBy({ left: direction * cardWidth * cardsPerStep, behavior: "smooth" });
 }
 
 prevBtn.addEventListener("click", () => scrollByCards(-1));
