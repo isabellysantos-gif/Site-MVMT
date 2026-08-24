@@ -1,3 +1,47 @@
+// ---------- Header scroll state ----------
+const siteHeader = document.querySelector(".site-header");
+const updateHeaderScrolled = () => {
+  siteHeader.classList.toggle("scrolled", window.scrollY > 40);
+};
+window.addEventListener("scroll", updateHeaderScrolled, { passive: true });
+updateHeaderScrolled();
+
+// ---------- Scroll reveal ----------
+const revealEls = document.querySelectorAll(".reveal");
+const revealObserver = new IntersectionObserver(
+  (entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("in-view");
+      observer.unobserve(entry.target);
+    });
+  },
+  { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
+);
+revealEls.forEach((el) => revealObserver.observe(el));
+
+// ---------- Cursor glow (pillar cards + CTA panel + Como funciona) ----------
+document.querySelectorAll(".pillar-card, .cta-panel, #como-funciona").forEach((card) => {
+  card.addEventListener("mousemove", (e) => {
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty("--glow-x", `${e.clientX - rect.left}px`);
+    card.style.setProperty("--glow-y", `${e.clientY - rect.top}px`);
+  });
+});
+
+// ---------- CTA role toggle ----------
+const roleToggle = document.getElementById("roleToggle");
+const perfilInput = document.getElementById("perfilInput");
+if (roleToggle && perfilInput) {
+  roleToggle.addEventListener("click", (e) => {
+    const btn = e.target.closest(".role-btn");
+    if (!btn) return;
+    roleToggle.querySelectorAll(".role-btn").forEach((b) => b.classList.remove("is-active"));
+    btn.classList.add("is-active");
+    perfilInput.value = btn.dataset.role;
+  });
+}
+
 // ---------- Mobile nav ----------
 const navToggle = document.getElementById("navToggle");
 const mainNav = document.getElementById("mainNav");
@@ -74,6 +118,19 @@ const INFLUENCERS = [
   { name: "Zeka Ramos", categoria: "Fitness", seguidores: "2,6M", mediaKit: "zkramos" },
 ];
 
+function followersValue(seguidores) {
+  if (!seguidores) return -1;
+  const match = seguidores.match(/^([\d.,]+)\s*(K|M)?$/i);
+  if (!match) return -1;
+  const num = parseFloat(match[1].replace(",", "."));
+  const suffix = (match[2] || "").toUpperCase();
+  if (suffix === "M") return num * 1_000_000;
+  if (suffix === "K") return num * 1_000;
+  return num;
+}
+
+INFLUENCERS.sort((a, b) => followersValue(b.seguidores) - followersValue(a.seguidores));
+
 function slugify(name) {
   return name
     .normalize("NFD")
@@ -147,6 +204,12 @@ if (window.matchMedia("(hover: none)").matches) {
   carousel.querySelectorAll(".inf-card").forEach((card) => {
     card.addEventListener("click", () => card.classList.toggle("is-flipped"));
   });
+}
+
+const infCount = document.getElementById("infCount");
+if (infCount) {
+  const creatorCount = INFLUENCERS.filter((inf) => !inf.isPress).length;
+  infCount.textContent = `${creatorCount} criadores no elenco`;
 }
 
 // ---------- Carousel arrows ----------
