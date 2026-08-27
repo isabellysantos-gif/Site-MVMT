@@ -54,6 +54,32 @@ if (sobreArt) {
   });
 }
 
+// ---------- Hero text scroll-away ----------
+const heroInner = document.querySelector(".hero-inner");
+const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+if (hero && heroInner && !reduceMotionQuery.matches) {
+  let heroTicking = false;
+  const updateHeroScrollFade = () => {
+    heroTicking = false;
+    const heroHeight = hero.offsetHeight;
+    const scrolled = Math.min(Math.max(window.scrollY, 0), heroHeight);
+    const progress = Math.min(scrolled / (heroHeight * 0.14), 1);
+    heroInner.style.transform = `translateY(${progress * -140}px)`;
+    heroInner.style.opacity = String(1 - progress);
+    heroInner.style.pointerEvents = progress > 0.5 ? "none" : "auto";
+  };
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (heroTicking) return;
+      heroTicking = true;
+      requestAnimationFrame(updateHeroScrollFade);
+    },
+    { passive: true }
+  );
+  updateHeroScrollFade();
+}
+
 // ---------- Header scroll state ----------
 const siteHeader = document.querySelector(".site-header");
 const updateHeaderScrolled = () => {

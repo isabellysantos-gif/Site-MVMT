@@ -290,8 +290,12 @@ button { font-family: inherit; cursor: pointer; }
   position: relative;
   background: var(--mvmt-black);
   color: var(--mvmt-white);
-  padding: 168px 0 110px;
+  padding: 168px 0 80px;
   overflow: hidden;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
 }
 .hero-decor { position: absolute; inset: 0; z-index: 0; }
 .hero-photo {
@@ -327,7 +331,14 @@ button { font-family: inherit; cursor: pointer; }
   50% { transform: translateY(-14px); }
 }
 
-.hero-inner { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; text-align: center; }
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  will-change: transform, opacity;
+}
 .eyebrow {
   display: inline-flex;
   align-items: center;
@@ -530,12 +541,12 @@ button { font-family: inherit; cursor: pointer; }
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
-  border-radius: 46% 54% 42% 58% / 58% 46% 54% 42%;
+  border-radius: 63% 37% 30% 70% / 55% 65% 35% 45%;
   overflow: hidden;
   background: var(--mvmt-black-2);
   transition: border-radius 0.6s cubic-bezier(0.16, 0.84, 0.44, 1);
 }
-.pillar-card:hover .pillar-photo { border-radius: 50% 50% 46% 54% / 54% 50% 50% 46%; }
+.pillar-card:hover .pillar-photo { border-radius: 37% 63% 70% 30% / 45% 35% 65% 55%; }
 .pillar-photo img {
   width: 100%;
   height: 100%;
@@ -603,6 +614,7 @@ button { font-family: inherit; cursor: pointer; }
   gap: 28px;
 }
 .step {
+  position: relative;
   background: #17171d;
   border: 1.5px dashed rgba(255, 255, 255, 0.2);
   border-radius: 20px;
@@ -610,6 +622,7 @@ button { font-family: inherit; cursor: pointer; }
   display: flex;
   flex-direction: column;
   justify-content: center;
+  overflow: hidden;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.5s ease, transform 0.4s ease, box-shadow 0.25s ease, border-color 0.25s ease;
@@ -624,10 +637,7 @@ button { font-family: inherit; cursor: pointer; }
   box-shadow: 0 18px 34px rgba(0, 0, 0, 0.35);
 }
 .step-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
+  max-width: 60%;
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -638,18 +648,28 @@ button { font-family: inherit; cursor: pointer; }
   }
 }
 .step-num {
-  font-size: 2.75rem;
-  font-weight: 200;
+  position: absolute;
+  top: 50%;
+  right: -6px;
+  z-index: 0;
+  display: inline-block;
+  font-family: "Bebas Neue", "Onest", sans-serif;
+  font-size: 11rem;
+  font-weight: 400;
   line-height: 1;
-  letter-spacing: -0.02em;
-  flex: none;
-  background: linear-gradient(180deg, #fff, rgba(255, 255, 255, 0.32));
-  -webkit-background-clip: text;
-  background-clip: text;
+  letter-spacing: -0.01em;
   color: transparent;
+  opacity: 0.35;
+  -webkit-text-stroke: 1.5px var(--mvmt-white);
+  transform: translateY(-50%) skewX(-9deg) rotate(-4deg);
+  transition: transform 0.35s cubic-bezier(0.16, 0.84, 0.44, 1);
+  pointer-events: none;
 }
-.step h3 { padding-top: 8px; font-size: 1.25rem; font-weight: 700; }
-.step p { margin-top: 36px; color: #a7a7b2; line-height: 1.6; font-size: 0.98rem; }
+.step:nth-child(2) .step-num { transform: translateY(-50%) skewX(-9deg) rotate(3deg); }
+.step:nth-child(3) .step-num { transform: translateY(-50%) skewX(-9deg) rotate(-3deg); }
+.step:hover .step-num { transform: translateY(-50%) skewX(-9deg) rotate(0deg) scale(1.05); }
+.step h3 { position: relative; z-index: 1; padding-top: 8px; font-size: 1.25rem; font-weight: 700; }
+.step p { position: relative; z-index: 1; margin-top: 12px; max-width: 60%; color: #a7a7b2; line-height: 1.6; font-size: 0.98rem; }
 
 /* ---------- Section transition (Como funciona -> Influencers) ---------- */
 .section-transition {
