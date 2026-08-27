@@ -1,3 +1,59 @@
+// ---------- Hero spotlight ----------
+const hero = document.querySelector(".hero");
+const heroSpotlight = document.querySelector(".hero-photo-spotlight");
+if (hero && heroSpotlight && window.matchMedia("(hover: hover)").matches) {
+  hero.addEventListener("mousemove", (e) => {
+    const rect = hero.getBoundingClientRect();
+    heroSpotlight.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+    heroSpotlight.style.setProperty("--my", `${e.clientY - rect.top}px`);
+  });
+}
+
+// ---------- Sobre photo carousel ----------
+const sobreArt = document.getElementById("sobreArt");
+if (sobreArt) {
+  const slides = [...sobreArt.querySelectorAll(".sobre-art-slide")];
+  const dotsWrap = sobreArt.querySelector(".sobre-art-dots");
+  slides.forEach((_, i) => {
+    const dot = document.createElement("span");
+    if (i === 0) dot.classList.add("is-active");
+    dotsWrap.appendChild(dot);
+  });
+  const dots = [...dotsWrap.children];
+
+  let current = 0;
+  const goTo = (index) => {
+    slides[current].classList.remove("is-active");
+    dots[current].classList.remove("is-active");
+    current = index;
+    slides[current].classList.add("is-active");
+    dots[current].classList.add("is-active");
+  };
+
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let autoplay = null;
+  const startAutoplay = () => {
+    if (slides.length <= 1 || reduceMotion) return;
+    autoplay = setInterval(() => goTo((current + 1) % slides.length), 4000);
+  };
+  const restartAutoplay = () => {
+    if (autoplay) clearInterval(autoplay);
+    startAutoplay();
+  };
+  startAutoplay();
+
+  const prevBtn = document.getElementById("sobrePrevBtn");
+  const nextBtn = document.getElementById("sobreNextBtn");
+  prevBtn.addEventListener("click", () => {
+    goTo((current - 1 + slides.length) % slides.length);
+    restartAutoplay();
+  });
+  nextBtn.addEventListener("click", () => {
+    goTo((current + 1) % slides.length);
+    restartAutoplay();
+  });
+}
+
 // ---------- Header scroll state ----------
 const siteHeader = document.querySelector(".site-header");
 const updateHeaderScrolled = () => {
