@@ -1,11 +1,13 @@
 // ---------- Hero spotlight ----------
 const hero = document.querySelector(".hero");
-const heroSpotlight = document.querySelector(".hero-photo-spotlight");
-if (hero && heroSpotlight && window.matchMedia("(hover: hover)").matches) {
+const heroSpotlights = document.querySelectorAll(".hero-photo-spotlight");
+if (hero && heroSpotlights.length && window.matchMedia("(hover: hover)").matches) {
   hero.addEventListener("mousemove", (e) => {
     const rect = hero.getBoundingClientRect();
-    heroSpotlight.style.setProperty("--mx", `${e.clientX - rect.left}px`);
-    heroSpotlight.style.setProperty("--my", `${e.clientY - rect.top}px`);
+    heroSpotlights.forEach((el) => {
+      el.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+      el.style.setProperty("--my", `${e.clientY - rect.top}px`);
+    });
   });
 }
 

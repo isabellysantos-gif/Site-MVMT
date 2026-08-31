@@ -316,6 +316,11 @@ button { font-family: inherit; cursor: pointer; }
   transition: opacity 0.5s ease;
 }
 .hero:not(:hover) .hero-photo-spotlight { opacity: 0; }
+.hero-photo-mobile { display: none; }
+@media (max-width: 760px) {
+  .hero-photo-desktop { display: none; }
+  .hero-photo-mobile { display: block; }
+}
 .decor { position: absolute; opacity: 0.9; }
 .decor-spiral {
   bottom: -420px; left: -300px; width: 560px; opacity: 0.5;
